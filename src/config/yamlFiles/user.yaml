@@ -1,0 +1,59 @@
+tags:
+  - name: Users
+    description: User management
+
+paths:
+
+  /users:
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        201:
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        409:
+          description: Email already exists
+
+components:
+  schemas:
+
+    CreateUserRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: Gabriel Medeiros
+        email:
+          type: string
+          example: gabriel@email.com
+        password:
+          type: string
+          example: 123456
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 67cbe3a7e41c9d8b1c1f7b1a
+        name:
+          type: string
+          example: Gabriel Medeiros
+        email:
+          type: string
+          example: gabriel@email.com

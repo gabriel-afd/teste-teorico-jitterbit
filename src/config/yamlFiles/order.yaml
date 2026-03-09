@@ -1,0 +1,139 @@
+tags:
+  - name: Orders
+    description: Order management
+
+paths:
+
+  /order:
+    post:
+      summary: Create a new order
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        201:
+          description: Order created
+        409:
+          description: Order already exists
+
+  /order/list:
+    get:
+      summary: List all orders
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of orders
+
+  /order/{orderId}:
+    get:
+      summary: Get order by ID
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Order found
+        404:
+          description: Order not found
+
+    put:
+      summary: Update order
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        200:
+          description: Order updated
+        404:
+          description: Order not found
+
+    delete:
+      summary: Delete order
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Order deleted
+        404:
+          description: Order not found
+
+components:
+  schemas:
+
+    Order:
+      type: object
+      required:
+        - orderId
+        - value
+        - creationDate
+        - items
+      properties:
+        orderId:
+          type: string
+          example: ORD-1001
+        value:
+          type: number
+          example: 1000
+        creationDate:
+          type: string
+          format: date-time
+          example: 2026-03-09T10:00:00Z
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    OrderItem:
+      type: object
+      required:
+        - productId
+        - quantity
+        - price
+      properties:
+        productId:
+          type: number
+          example: 2434
+        quantity:
+          type: number
+          example: 1
+        price:
+          type: number
+          example: 1000

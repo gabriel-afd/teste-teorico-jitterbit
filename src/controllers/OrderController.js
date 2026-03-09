@@ -53,7 +53,11 @@ class OrderController {
                 req.body
             );
 
-            res.json(updated);
+            if (!updated){
+                return res.status(404).json({message: "Order not found"});
+            }
+
+            res.status(200).json(updated);
 
         } catch (error) {
             next(error);
@@ -63,7 +67,11 @@ class OrderController {
     async delete(req, res, next){
         try {
 
-            await OrderService.delete(req.params.orderId);
+            const deleted = await OrderService.delete(req.params.orderId);
+
+            if (!deleted){
+                return res.status(404).json({message: "Order not found"});
+            }
 
             res.status(204).send();
 
